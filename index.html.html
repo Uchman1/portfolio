@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRUNCHY Data & Technology | Corporate Deck</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --krunchy-black: #0a0a0a;
+            --krunchy-dark: #0f0f0f;
+            --krunchy-purple: #8b5cf6;
+            --krunchy-pink: #ec4899;
+            --krunchy-orange: #f97316;
+            --krunchy-text: #f8fafc;
+            --krunchy-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--krunchy-black);
+            color: var(--krunchy-text);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100%;
+            max-width: 1600px;
+            position: relative;
+            background: radial-gradient(ellipse at top, #1a0b2e 0%, var(--krunchy-black) 50%, #000000 100%);
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+        }
+
+        .slide.prev {
+            transform: translateX(-100px);
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 4rem;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--krunchy-text) 0%, var(--krunchy-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            color: var(--krunchy-text);
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--krunchy-purple), var(--krunchy-pink));
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--krunchy-purple);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        p, li {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: var(--krunchy-muted);
+            max-width: 800px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--krunchy-pink);
+            font-weight: bold;
+        }
+
+        /* Cover Slide Special Styling */
+        .cover-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #1a0b2e 0%, #000000 70%);
+        }
+
+        .logo-container {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 3rem;
+            position: relative;
+            filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.3));
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .cover-slide h1 {
+            font-size: 5rem;
+            font-weight: 200;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--krunchy-purple) 50%, var(--krunchy-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cover-subtitle {
+            font-size: 1.5rem;
+            color: var(--krunchy-muted);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+        }
+
+        .tagline {
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--krunchy-pink);
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .est-badge {
+            position: absolute;
+            top: 40px;
+            right: 80px;
+            font-size: 0.9rem;
+            color: var(--krunchy-muted);
+            letter-spacing: 0.2em;
+        }
+
+        /* Grid Layouts */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--krunchy-purple), var(--krunchy-pink));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.1);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: rgba(139, 92, 246, 0.2);
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .check-list li::before {
+            content: '✓';
+            color: #10b981;
+        }
+
+        .cross-list li::before {
+            content: '✕';
+            color: #ef4444;
+        }
+
+        /* Problem/Solution Cards */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .problem-card {
+            background: rgba(239, 68, 68, 0.05);
+            border-left: 4px solid #ef4444;
+            padding: 2rem;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .solution-card {
+            background: rgba(16, 185, 129, 0.05);
+            border-left: 4px solid #10b981;
+            padding: 2rem;
+            border-radius: 0 12px 12px 0;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--krunchy-purple), var(--krunchy-pink));
+            opacity: 0.3;
+        }
+
+        .timeline-item {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .timeline-dot {
+            width: 40px;
+            height: 40px;
+            background: var(--krunchy-dark);
+            border: 2px solid var(--krunchy-purple);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--krunchy-purple);
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-item.active .timeline-dot {
+            background: var(--krunchy-purple);
+            color: white;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: var(--krunchy-text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: var(--krunchy-purple);
+            border-color: var(--krunchy-purple);
+            transform: scale(1.1);
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 40px;
+            left: 80px;
+            font-size: 0.9rem;
+            color: var(--krunchy-muted);
+            letter-spacing: 0.1em;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--krunchy-purple), var(--krunchy-pink));
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* CTA Slide */
+        .cta-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #1a0b2e 0%, #000000 70%);
+        }
+
+        .cta-box {
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 4rem;
+            border-radius: 20px;
+            background: rgba(139, 92, 246, 0.05);
+            backdrop-filter: blur(10px);
+            max-width: 900px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, var(--krunchy-purple), var(--krunchy-pink));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .slide {
+                padding: 40px;
+            }
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            .two-column, .problem-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .timeline {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            .timeline::before {
+                display: none;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .slide {
+                position: relative;
+                opacity: 1;
+                transform: none;
+                page-break-after: always;
+                height: 100vh;
+            }
+            .nav-controls, .progress-bar, .slide-counter {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <div class="presentation-container">
+        
+        <!-- SLIDE 1: COVER -->
+        <div class="slide cover-slide active" data-slide="1">
+            <div class="est-badge">EST. 2019</div>
+            <div class="logo-container floating">
+                <img src="/mnt/kimi/upload/KRUNCHY.PNG" alt="KRUNCHY Logo">
+            </div>
+            <h1>KRUNCHY</h1>
+            <div class="cover-subtitle">Data & Technology</div>
+            <div class="tagline">"Engineering Digital Confidence"</div>
+            <p style="margin-top: 3rem; font-size: 1.1rem; opacity: 0.8;">
+                Digital Infrastructure | Cybersecurity | Data Intelligence | Enterprise Solutions
+            </p>
+        </div>
+
+        <!-- SLIDE 2: WHO WE ARE -->
+        <div class="slide" data-slide="2">
+            <h2>Who We Are</h2>
+            <p style="font-size: 1.4rem; margin-bottom: 2rem; color: var(--krunchy-text);">
+                Krunchy Data & Technology is a full-spectrum digital solutions firm delivering enterprise-grade infrastructure and intelligence.
+            </p>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-number">01</div>
+                    <h3>Enterprise IT Infrastructure</h3>
+                    <p>Scalable, resilient backbone for modern business operations</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-number">02</div>
+                    <h3>Cloud & DevOps Engineering</h3>
+                    <p>Seamless migration and continuous deployment pipelines</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-number">03</div>
+                    <h3>Web & Application Development</h3>
+                    <p>Custom platforms built for performance and scale</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-number">04</div>
+                    <h3>Cybersecurity Architecture</h3>
+                    <p>Defense-in-depth strategies for threat protection</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-number">05</div>
+                    <h3>Data & Analytics Solutions</h3>
+                    <p>Transform raw data into strategic intelligence</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-number">06</div>
+                    <h3>Managed IT & Retainership</h3>
+                    <p>End-to-end technology partnership with SLA backing</p>
+                </div>
+            </div>
+            <p style="margin-top: 3rem; font-size: 1.3rem; border-left: 3px solid var(--krunchy-pink); padding-left: 2rem; color: var(--krunchy-text);">
+                We don't just deploy technology. We design resilient ecosystems that scale.
+            </p>
+        </div>
+
+        <!-- SLIDE 3: THE PROBLEM -->
+        <div class="slide" data-slide="3">
+            <h2>The Problem We Solve</h2>
+            <p style="margin-bottom: 2rem;">Across Nigeria and emerging markets, organizations face critical digital infrastructure gaps:</p>
+            
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <h3 style="color: #ef4444;">The Challenges</h3>
+                    <ul class="cross-list">
+                        <li>Fragmented systems and siloed operations</li>
+                        <li>Poor cybersecurity posture and exposure</li>
+                        <li>Weak data visibility for decision-making</li>
+                        <li>Unreliable networks and costly downtime</li>
+                        <li>Poor integration between digital tools</li>
+                        <li>No structured IT governance frameworks</li>
+                    </ul>
+                </div>
+                <div class="solution-card">
+                    <h3 style="color: #10b981;">The Impact</h3>
+                    <ul class="check-list">
+                        <li>Revenue leakage from inefficiencies</li>
+                        <li>Operational bottlenecks and delays</li>
+                        <li>Security vulnerabilities and data risk</li>
+                        <li>Limited scalability and growth constraints</li>
+                        <li>Competitive disadvantage in digital markets</li>
+                        <li>Compliance and regulatory exposure</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: POSITIONING -->
+        <div class="slide" data-slide="4">
+            <h2>Our Positioning</h2>
+            <div class="two-column" style="margin-top: 3rem;">
+                <div>
+                    <h3 style="color: #ef4444; margin-bottom: 2rem;">We Are Not</h3>
+                    <ul class="cross-list">
+                        <li style="font-size: 1.3rem; margin-bottom: 1.5rem;">A basic web agency</li>
+                        <li style="font-size: 1.3rem; margin-bottom: 1.5rem;">A router-installation company</li>
+                        <li style="font-size: 1.3rem; margin-bottom: 1.5rem;">A freelance tech team</li>
+                        <li style="font-size: 1.3rem; margin-bottom: 1.5rem;">A break-fix IT service</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: #10b981; margin-bottom: 2rem;">We Are</h3>
+                    <ul class="check-list">
+                        <li style="font-size: 1.3rem; margin-bottom: 1.5rem;"><strong>Digital Transformation Partner</strong></li>
+                        <li style="font-size: 1.3rem; margin-bottom: 1.5rem;"><strong>Managed Infrastructure Provider</strong></li>
+                        <li style="font-size: 1.3rem; margin-bottom: 1.5rem;"><strong>Cybersecurity-Enforced IT Backbone</strong></li>
+                        <li style="font-size: 1.3rem; margin-bottom: 1.5rem;"><strong>Data-Driven Growth Enabler</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: CORE SERVICES -->
+        <div class="slide" data-slide="5">
+            <h2>Core Service Pillars</h2>
+            <div style="margin-top: 2rem;">
+                <div class="service-card" style="margin-bottom: 1.5rem;">
+                    <div style="display: grid; grid-template-columns: 50px 1fr; gap: 2rem; align-items: center;">
+                        <div style="font-size: 2.5rem; color: var(--krunchy-purple);">🏗</div>
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem;">Digital Infrastructure Engineering</h3>
+                            <p style="font-size: 1.1rem;">Enterprise Networking • Multi-ISP Architecture • Firewall & UTM • Structured Cabling • Access Control • Hybrid Cloud</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card" style="margin-bottom: 1.5rem;">
+                    <div style="display: grid; grid-template-columns: 50px 1fr; gap: 2rem; align-items: center;">
+                        <div style="font-size: 2.5rem; color: var(--krunchy-purple);">🔐</div>
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem;">Cybersecurity & Compliance</h3>
+                            <p style="font-size: 1.1rem;">Endpoint Security • Firewall Hardening • VPN Architecture • Email Security • Vulnerability Assessment • Governance Advisory</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card" style="margin-bottom: 1.5rem;">
+                    <div style="display: grid; grid-template-columns: 50px 1fr; gap: 2rem; align-items: center;">
+                        <div style="font-size: 2.5rem; color: var(--krunchy-purple);">☁️</div>
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem;">Cloud & DevOps</h3>
+                            <p style="font-size: 1.1rem;">Cloud Migration • CI/CD Pipelines • Hosting Management • Infrastructure as Code • Performance Monitoring</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card" style="margin-bottom: 1.5rem;">
+                    <div style="display: grid; grid-template-columns: 50px 1fr; gap: 2rem; align-items: center;">
+                        <div style="font-size: 2.5rem; color: var(--krunchy-purple);">💻</div>
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem;">Web & Application Engineering</h3>
+                            <p style="font-size: 1.1rem;">Corporate Websites • SaaS Platforms • E-Invoicing Systems • Enterprise Portals • CRM & ERP Integrations</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div style="display: grid; grid-template-columns: 50px 1fr; gap: 2rem; align-items: center;">
+                        <div style="font-size: 2.5rem; color: var(--krunchy-purple);">📊</div>
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem;">Data & Intelligence</h3>
+                            <p style="font-size: 1.1rem;">Analytics Dashboards • Data Modeling • Reporting Automation • Risk Scoring • Predictive Analytics</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: DIFFERENTIATORS -->
+        <div class="slide" data-slide="6">
+            <h2>Our Differentiator</h2>
+            <div class="services-grid" style="margin-top: 3rem;">
+                <div class="service-card" style="text-align: center; padding: 3rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔐</div>
+                    <h3>Security-First Architecture</h3>
+                    <p>Every solution designed with layered security as foundation, not afterthought</p>
+                </div>
+                <div class="service-card" style="text-align: center; padding: 3rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                    <h3>Data-Embedded Systems</h3>
+                    <p>We build systems that generate insights, not just outputs</p>
+                </div>
+                <div class="service-card" style="text-align: center; padding: 3rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔄</div>
+                    <h3>Integration Thinking</h3>
+                    <p>Ensuring all systems communicate seamlessly across your ecosystem</p>
+                </div>
+                <div class="service-card" style="text-align: center; padding: 3rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🛠</div>
+                    <h3>End-to-End Ownership</h3>
+                    <p>From architecture to deployment to monitoring to optimization</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: INDUSTRIES -->
+        <div class="slide" data-slide="7">
+            <h2>Industries We Serve</h2>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 4rem;">
+                <div class="service-card" style="text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">📺</div>
+                    <h3>Media & Advertising</h3>
+                    <p>High-performance infrastructure for creative agencies</p>
+                </div>
+                <div class="service-card" style="text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏥</div>
+                    <h3>Healthcare & NGOs</h3>
+                    <p>Compliant, secure systems for sensitive data</p>
+                </div>
+                <div class="service-card" style="text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏪</div>
+                    <h3>Retail & Hospitality</h3>
+                    <p>Reliable POS and inventory management systems</p>
+                </div>
+                <div class="service-card" style="text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🚀</div>
+                    <h3>Startups & SaaS</h3>
+                    <p>Scalable architecture for rapid growth</p>
+                </div>
+                <div class="service-card" style="text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏢</div>
+                    <h3>Enterprise Corporates</h3>
+                    <p>Complex integration and governance solutions</p>
+                </div>
+                <div class="service-card" style="text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">💼</div>
+                    <h3>SMEs & HNIs</h3>
+                    <p>Personalized technology advisory and support</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: FLAGSHIP SOLUTIONS -->
+        <div class="slide" data-slide="8">
+            <h2>Flagship Solutions</h2>
+            <div style="margin-top: 2rem;">
+                <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem;">
+                    <h3>🏢 Managed IT Retainership</h3>
+                    <p>Complete IT management with SLA-backed support, proactive monitoring, and strategic technology roadmap planning.</p>
+                </div>
+                <div style="background: rgba(236, 72, 153, 0.1); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem;">
+                    <h3>🧾 E-Invoicing Platform</h3>
+                    <p>Nigeria-focused SaaS solution with multi-company support, API integrations, compliance readiness, and scalable architecture.</p>
+                </div>
+                <div style="background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem;">
+                    <h3>📊 Operational Risk Scoring (ORS)</h3>
+                    <p>Custom scoring frameworks embedded directly into workflows for real-time risk assessment and mitigation.</p>
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 2rem;">
+                    <h3>🖥 Smart Office Deployment</h3>
+                    <p>Full infrastructure deployment—from network to security to collaboration tools—within tight timelines.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: DELIVERY FRAMEWORK -->
+        <div class="slide" data-slide="9">
+            <h2>Delivery Framework</h2>
+            <p style="margin-bottom: 3rem;">We follow a structured lifecycle ensuring quality, security, and scalability at every phase:</p>
+            
+            <div class="timeline">
+                <div class="timeline-item active">
+                    <div class="timeline-dot">1</div>
+                    <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Discovery</h3>
+                    <p style="font-size: 0.9rem;">Systems Audit</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">2</div>
+                    <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Design</h3>
+                    <p style="font-size: 0.9rem;">Architecture</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">3</div>
+                    <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Assess</h3>
+                    <p style="font-size: 0.9rem;">Security Review</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">4</div>
+                    <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Deploy</h3>
+                    <p style="font-size: 0.9rem;">Implementation</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">5</div>
+                    <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Monitor</h3>
+                    <p style="font-size: 0.9rem;">Reporting</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">6</div>
+                    <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Optimize</h3>
+                    <p style="font-size: 0.9rem;">Scale</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: WHY KRUNCHY -->
+        <div class="slide" data-slide="10">
+            <h2>Why Krunchy?</h2>
+            <div class="two-column" style="margin-top: 3rem;">
+                <div>
+                    <div class="service-card" style="margin-bottom: 2rem;">
+                        <h3>✔ Executive-Level Thinking</h3>
+                        <p>We design for CEOs and business outcomes, not just IT managers.</p>
+                    </div>
+                    <div class="service-card" style="margin-bottom: 2rem;">
+                        <h3>✔ Financial Awareness</h3>
+                        <p>Infrastructure investments aligned with measurable ROI and business value.</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="service-card" style="margin-bottom: 2rem;">
+                        <h3>✔ Security-Conscious Culture</h3>
+                        <p>Risk is always measured, monitored, and mitigated proactively.</p>
+                    </div>
+                    <div class="service-card" style="margin-bottom: 2rem;">
+                        <h3>✔ Built for Scale</h3>
+                        <p>Today's SME solution architected to become tomorrow's enterprise platform.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: VISION -->
+        <div class="slide" data-slide="11">
+            <h2>Our Vision</h2>
+            <div style="display: flex; align-items: center; justify-content: center; height: 60%; text-align: center;">
+                <div style="max-width: 900px;">
+                    <p style="font-size: 2.5rem; line-height: 1.4; color: var(--krunchy-text); font-weight: 300; margin-bottom: 3rem;">
+                        "To become West Africa's most trusted digital infrastructure and intelligence partner—powering resilient, secure, and data-driven organizations."
+                    </p>
+                    <div style="width: 100px; height: 3px; background: linear-gradient(90deg, var(--krunchy-purple), var(--krunchy-pink)); margin: 0 auto;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: MISSION -->
+        <div class="slide" data-slide="12">
+            <h2>Our Mission</h2>
+            <div style="display: flex; align-items: center; justify-content: center; height: 60%; text-align: center;">
+                <div style="max-width: 900px;">
+                    <p style="font-size: 2rem; line-height: 1.6; color: var(--krunchy-text); font-weight: 300;">
+                        "To design, deploy, and manage secure, scalable, and intelligent technology ecosystems that enable business growth and operational excellence."
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: ROADMAP -->
+        <div class="slide" data-slide="13">
+            <h2>Future Roadmap</h2>
+            <div style="margin-top: 3rem;">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
+                    <div class="service-card">
+                        <h3>🚀 SaaS Expansion</h3>
+                        <p>E-Invoicing platform evolution and industry-specific tool development</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>🔒 Cybersecurity-as-a-Service</h3>
+                        <p>Comprehensive security offerings for SMEs without in-house expertise</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>👁 Managed SOC</h3>
+                        <p>24/7 Security Operations Center for threat detection and response</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>🤖 AI-Enabled Analytics</h3>
+                        <p>Machine learning platforms for predictive business intelligence</p>
+                    </div>
+                </div>
+                <div class="service-card" style="margin-top: 2rem; text-align: center;">
+                    <h3>📋 Enterprise Governance & Compliance Advisory</h3>
+                    <p>Strategic consulting for regulatory compliance and IT governance frameworks</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: ENGAGEMENT MODEL -->
+        <div class="slide" data-slide="14">
+            <h2>Client Engagement Model</h2>
+            <p style="margin-bottom: 3rem;">Flexible partnership structures designed to meet diverse organizational needs:</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem;">
+                <div style="text-align: center; padding: 3rem; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+                    <h3>Project-Based</h3>
+                    <p>Defined scope, fixed timeline, clear deliverables</p>
+                </div>
+                <div style="text-align: center; padding: 3rem; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🤝</div>
+                    <h3>Managed Retainership</h3>
+                    <p>Ongoing partnership with SLA-backed support</p>
+                </div>
+                <div style="text-align: center; padding: 3rem; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔄</div>
+                    <h3>SaaS Subscription</h3>
+                    <p>Platform access with continuous updates and support</p>
+                </div>
+                <div style="text-align: center; padding: 3rem; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">💡</div>
+                    <h3>Strategic Advisory</h3>
+                    <p>Technology roadmap and digital transformation consulting</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 15: CALL TO ACTION -->
+        <div class="slide cta-slide" data-slide="15">
+            <div class="cta-box">
+                <h1 style="font-size: 3.5rem; margin-bottom: 2rem;">Partner With Us</h1>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin: 3rem 0; text-align: left;">
+                    <div>
+                        <h3 style="color: var(--krunchy-purple);">Build</h3>
+                        <p style="font-size: 1rem;">Infrastructure That Thinks</p>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--krunchy-pink);">Deploy</h3>
+                        <p style="font-size: 1rem;">Security That Protects</p>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--krunchy-orange);">Use</h3>
+                        <p style="font-size: 1rem;">Data That Decides</p>
+                    </div>
+                </div>
+                <div style="margin-top: 3rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">KRUNCHY Data & Technology</h2>
+                    <p style="color: var(--krunchy-pink); font-size: 1.2rem; font-style: italic;">Engineering Digital Confidence</p>
+                    <p style="margin-top: 2rem; font-size: 1rem; opacity: 0.7;">EST. 2019</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="slide-counter">
+        <span id="currentSlide">1</span> / <span id="totalSlides">15</span>
+    </div>
+
+    <div class="nav-controls">
+        <button class="nav-btn" onclick="prevSlide()">←</button>
+        <button class="nav-btn" onclick="nextSlide()">→</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 15;
+        
+        function updateSlide() {
+            document.querySelectorAll('.slide').forEach((slide, index) => {
+                slide.classList.remove('active', 'prev');
+                if (index + 1 === currentSlide) {
+                    slide.classList.add('active');
+                } else if (index + 1 < currentSlide) {
+                    slide.classList.add('prev');
+                }
+            });
+            
+            document.getElementById('currentSlide').textContent = currentSlide;
+            document.getElementById('progressBar').style.width = (currentSlide / totalSlides * 100) + '%';
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            }
+        });
+
+        // Touch support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX - touchEndX > 50) {
+                nextSlide();
+            } else if (touchEndX - touchStartX > 50) {
+                prevSlide();
+            }
+        });
+
+        updateSlide();
+    </script>
+</body>
+</html>
